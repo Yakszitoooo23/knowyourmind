@@ -152,6 +152,7 @@ function UnlockContent() {
           body: JSON.stringify({
             token: tokenParam,
             tier: 'tier_0',
+            origin: typeof window !== 'undefined' ? window.location.origin : undefined,
           }),
         })
 
