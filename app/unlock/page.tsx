@@ -283,28 +283,34 @@ function UnlockContent() {
             </ul>
           </div>
 
-          {/* Celebrity Teaser */}
+          {/* Celebrity Teaser - show 3 famous minds for this type */}
           <div className="mb-8">
             <p className="font-semibold text-gray-900 mb-4">People with your profile include:</p>
-            <div className="flex justify-center gap-8">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div className="h-16 w-16 rounded-full bg-gray-200 border-2 border-gray-300 flex items-center justify-center shadow-inner">
-                    <span className="text-gray-400 text-xl font-bold">?</span>
+            <div className="flex justify-center gap-6 sm:gap-8 flex-wrap">
+              {(types[type].famousMinds.slice(0, 3).map((entry) => {
+                const name = entry.split(' — ')[0].trim()
+                const initial = name.split(' ')[0]?.[0] ?? '?'
+                return (
+                  <div key={name} className="flex flex-col items-center min-w-[80px]">
+                    <div className="h-16 w-16 rounded-full bg-blue-100 border-2 border-blue-200 flex items-center justify-center shadow-inner text-blue-700 font-bold text-xl">
+                      {initial}
+                    </div>
+                    <span className="mt-2 text-sm font-medium text-gray-800 text-center leading-tight">
+                      {name}
+                    </span>
                   </div>
-                  <span className="mt-2 text-sm font-medium text-gray-500">???</span>
-                </div>
-              ))}
+                )
+              }))}
             </div>
             <p className="mt-4 text-sm text-gray-600 italic">
-              Unlock to reveal who thinks like you
+              Unlock to see your full profile and how you think like them
             </p>
           </div>
 
           {/* Price */}
           <div className="mb-8">
             <div className="flex items-baseline justify-center gap-2">
-              <span className="text-5xl font-bold text-blue-600">$1.99</span>
+              <span className="text-5xl font-bold text-blue-600">$0.99</span>
               <span className="text-gray-500">one-time</span>
             </div>
             <p className="text-sm text-gray-500 mt-2">
@@ -318,7 +324,7 @@ function UnlockContent() {
             disabled={isLoading}
             className="w-full rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed mb-3"
           >
-            {isLoading ? 'Processing...' : 'Reveal My Intelligence Type — $1.99'}
+            {isLoading ? 'Processing...' : 'Reveal My Intelligence Type — $0.99'}
           </button>
 
           <p className="text-sm text-gray-600 mb-6">

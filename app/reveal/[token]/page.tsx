@@ -43,11 +43,25 @@ export default function RevealPage() {
         }
 
         // New format - fetch from database using reveal_token
-        const { data: user, error: userError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('reveal_token', token)
-          .single()
+        const fromPaymentSuccess = searchParams.get('payment') === 'success'
+        let user: any = null
+        let userError: any = null
+
+        // If just returned from Stripe, retry a few times (webhook can be delayed)
+        const maxAttempts = fromPaymentSuccess ? 5 : 1
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+          const result = await supabase
+            .from('users')
+            .select('*')
+            .eq('reveal_token', token)
+            .single()
+          user = result.data
+          userError = result.error
+          if (user?.reveal_paid) break
+          if (fromPaymentSuccess && attempt < maxAttempts - 1) {
+            await new Promise((r) => setTimeout(r, 1500))
+          }
+        }
 
         if (userError || !user) {
           setError('Invalid or expired link')
